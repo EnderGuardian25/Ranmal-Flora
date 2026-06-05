@@ -1,0 +1,1701 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8"/>
+<meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+<title>Ranmal Flora — Sri Lanka's Tissue Culture Laboratory</title>
+<link rel="preconnect" href="https://fonts.googleapis.com"/>
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin/>
+<link href="https://fonts.googleapis.com/css2?family=Playfair+Display:ital,wght@0,400;0,700;0,900;1,400;1,700&family=DM+Sans:wght@300;400;500;600&family=DM+Mono:wght@400;500&display=swap" rel="stylesheet"/>
+<style>
+  /* =============================================
+     DESIGN SYSTEM — RANMAL FLORA
+     Aesthetic: Bold Tropical / Editorial / Nature-forward
+     Palette: Deep Jungle + Warm Amber + Cream Parchment
+  ============================================= */
+  :root {
+    --jungle:       #0d2818;
+    --forest:       #1a4a2e;
+    --moss:         #2d6a4f;
+    --fern:         #52b788;
+    --lime-mist:    #b7e4c7;
+    --parchment:    #f8f4ec;
+    --cream:        #fdfaf4;
+    --amber:        #d48c2d;
+    --gold:         #f0b429;
+    --rust:         #c46b2d;
+    --charcoal:     #1c1c1c;
+    --ink:          #2c2c2c;
+    --mist:         #e8ede9;
+
+    --font-display: 'Playfair Display', Georgia, serif;
+    --font-body:    'DM Sans', sans-serif;
+    --font-mono:    'DM Mono', monospace;
+
+    --ease-out: cubic-bezier(0.16, 1, 0.3, 1);
+    --ease-in-out: cubic-bezier(0.65, 0, 0.35, 1);
+  }
+
+  *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+
+  html { scroll-behavior: smooth; }
+
+  body {
+    font-family: var(--font-body);
+    background: var(--cream);
+    color: var(--ink);
+    overflow-x: hidden;
+    -webkit-font-smoothing: antialiased;
+  }
+
+  /* ---- SCROLLBAR ---- */
+  ::-webkit-scrollbar { width: 6px; }
+  ::-webkit-scrollbar-track { background: var(--parchment); }
+  ::-webkit-scrollbar-thumb { background: var(--moss); border-radius: 3px; }
+
+  /* =============================================
+     NAV
+  ============================================= */
+  nav {
+    position: fixed; top: 0; left: 0; right: 0;
+    z-index: 100;
+    padding: 20px 48px;
+    display: flex; align-items: center; justify-content: space-between;
+    transition: background 0.4s var(--ease-out), padding 0.3s;
+    backdrop-filter: blur(0px);
+  }
+  nav.scrolled {
+    background: rgba(13, 40, 24, 0.96);
+    padding: 14px 48px;
+    backdrop-filter: blur(12px);
+    box-shadow: 0 1px 0 rgba(255,255,255,0.06);
+  }
+  .nav-logo {
+    display: flex; align-items: center; gap: 12px; text-decoration: none;
+  }
+  .nav-logo img {
+    height: 44px; width: auto;
+    filter: brightness(0) invert(1);
+  }
+  .nav-links {
+    display: flex; align-items: center; gap: 36px;
+    list-style: none;
+  }
+  .nav-links a {
+    text-decoration: none;
+    font-size: 13px; font-weight: 500; letter-spacing: 0.08em;
+    text-transform: uppercase;
+    color: rgba(255,255,255,0.75);
+    transition: color 0.2s;
+  }
+  .nav-links a:hover { color: var(--gold); }
+  .nav-cta {
+    background: var(--amber);
+    color: white !important;
+    padding: 10px 22px;
+    border-radius: 2px;
+    transition: background 0.2s !important;
+  }
+  .nav-cta:hover { background: var(--gold) !important; color: var(--jungle) !important; }
+
+  /* Mobile nav toggle */
+  .nav-toggle {
+    display: none;
+    flex-direction: column; gap: 5px;
+    cursor: pointer; background: none; border: none; padding: 4px;
+  }
+  .nav-toggle span {
+    display: block; width: 24px; height: 2px;
+    background: white; transition: all 0.3s;
+  }
+
+  /* =============================================
+     HERO
+  ============================================= */
+  .hero {
+    min-height: 100vh;
+    background: var(--jungle);
+    position: relative;
+    overflow: hidden;
+    display: flex; align-items: center;
+  }
+
+  /* Organic leaf pattern background */
+  .hero-bg {
+    position: absolute; inset: 0;
+    background:
+      radial-gradient(ellipse 80% 60% at 70% 50%, rgba(26, 74, 46, 0.6) 0%, transparent 70%),
+      radial-gradient(ellipse 50% 80% at 10% 80%, rgba(82, 183, 136, 0.12) 0%, transparent 60%),
+      radial-gradient(ellipse 60% 40% at 90% 10%, rgba(212, 140, 45, 0.08) 0%, transparent 60%);
+  }
+
+  /* Animated floating leaf shapes */
+  .leaf-canvas {
+    position: absolute; inset: 0; pointer-events: none;
+  }
+  .leaf {
+    position: absolute;
+    opacity: 0.07;
+    animation: floatLeaf 20s infinite ease-in-out;
+  }
+  .leaf svg { fill: var(--fern); }
+  .leaf:nth-child(1) { top: 10%; right: 15%; width: 280px; animation-delay: 0s; }
+  .leaf:nth-child(2) { top: 55%; right: 5%; width: 180px; animation-delay: -7s; opacity: 0.05; }
+  .leaf:nth-child(3) { bottom: 5%; left: 20%; width: 220px; animation-delay: -14s; opacity: 0.06; }
+  .leaf:nth-child(4) { top: 20%; left: 5%; width: 140px; animation-delay: -3s; opacity: 0.04; }
+
+  @keyframes floatLeaf {
+    0%, 100% { transform: translateY(0) rotate(0deg); }
+    33%       { transform: translateY(-18px) rotate(4deg); }
+    66%       { transform: translateY(10px) rotate(-2deg); }
+  }
+
+  /* Grain texture overlay */
+  .hero::after {
+    content: '';
+    position: absolute; inset: 0;
+    background-image: url("data:image/svg+xml,%3Csvg viewBox='0 0 256 256' xmlns='http://www.w3.org/2000/svg'%3E%3Cfilter id='noise'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='0.9' numOctaves='4' stitchTiles='stitch'/%3E%3C/filter%3E%3Crect width='100%25' height='100%25' filter='url(%23noise)' opacity='0.04'/%3E%3C/svg%3E");
+    pointer-events: none; opacity: 0.4;
+  }
+
+  .hero-inner {
+    position: relative; z-index: 2;
+    max-width: 1280px; margin: 0 auto;
+    padding: 120px 48px 80px;
+    display: grid; grid-template-columns: 1fr 1fr;
+    gap: 60px; align-items: center;
+  }
+
+  .hero-eyebrow {
+    display: inline-flex; align-items: center; gap: 10px;
+    font-family: var(--font-mono);
+    font-size: 11px; letter-spacing: 0.16em; text-transform: uppercase;
+    color: var(--fern);
+    margin-bottom: 24px;
+    opacity: 0; animation: fadeUp 0.8s var(--ease-out) 0.2s forwards;
+  }
+  .hero-eyebrow::before {
+    content: ''; display: block;
+    width: 32px; height: 1px; background: var(--fern);
+  }
+
+  .hero-title {
+    font-family: var(--font-display);
+    font-size: clamp(48px, 5.5vw, 80px);
+    font-weight: 900;
+    line-height: 1.0;
+    color: white;
+    margin-bottom: 28px;
+    opacity: 0; animation: fadeUp 0.9s var(--ease-out) 0.35s forwards;
+  }
+  .hero-title em {
+    font-style: italic;
+    color: var(--gold);
+    display: block;
+  }
+
+  .hero-desc {
+    font-size: 17px; line-height: 1.7; font-weight: 300;
+    color: rgba(255,255,255,0.65);
+    max-width: 480px;
+    margin-bottom: 44px;
+    opacity: 0; animation: fadeUp 0.9s var(--ease-out) 0.5s forwards;
+  }
+
+  .hero-actions {
+    display: flex; align-items: center; gap: 16px; flex-wrap: wrap;
+    opacity: 0; animation: fadeUp 0.9s var(--ease-out) 0.65s forwards;
+  }
+  .btn-primary {
+    display: inline-flex; align-items: center; gap: 10px;
+    background: var(--amber);
+    color: white; font-weight: 600; font-size: 14px;
+    letter-spacing: 0.04em;
+    padding: 16px 32px; border-radius: 2px;
+    text-decoration: none; border: none; cursor: pointer;
+    transition: background 0.2s, transform 0.2s;
+  }
+  .btn-primary:hover { background: var(--gold); color: var(--jungle); transform: translateY(-1px); }
+  .btn-outline {
+    display: inline-flex; align-items: center; gap: 10px;
+    background: transparent;
+    color: rgba(255,255,255,0.8); font-weight: 500; font-size: 14px;
+    letter-spacing: 0.04em;
+    padding: 15px 28px; border-radius: 2px;
+    border: 1px solid rgba(255,255,255,0.2);
+    text-decoration: none; cursor: pointer;
+    transition: all 0.2s;
+  }
+  .btn-outline:hover { border-color: var(--fern); color: var(--fern); }
+
+  .hero-stats {
+    display: grid; grid-template-columns: repeat(3, 1fr);
+    gap: 1px; background: rgba(255,255,255,0.06);
+    border: 1px solid rgba(255,255,255,0.06);
+    margin-top: 60px;
+    opacity: 0; animation: fadeUp 0.9s var(--ease-out) 0.8s forwards;
+  }
+  .stat {
+    padding: 24px 20px; background: rgba(13,40,24,0.6);
+    text-align: center;
+  }
+  .stat-number {
+    font-family: var(--font-display);
+    font-size: 36px; font-weight: 900;
+    color: var(--gold);
+    line-height: 1;
+    margin-bottom: 6px;
+  }
+  .stat-label {
+    font-size: 11px; letter-spacing: 0.1em; text-transform: uppercase;
+    color: rgba(255,255,255,0.45); font-family: var(--font-mono);
+  }
+
+  /* Hero right — visual panel */
+  .hero-visual {
+    position: relative;
+    opacity: 0; animation: fadeIn 1.2s var(--ease-out) 0.4s forwards;
+  }
+  .hero-img-frame {
+    position: relative;
+    border: 1px solid rgba(82,183,136,0.2);
+    padding: 8px;
+  }
+  .hero-img-frame::before {
+    content: '';
+    position: absolute; top: -20px; right: -20px;
+    width: 120px; height: 120px;
+    border-top: 2px solid var(--amber);
+    border-right: 2px solid var(--amber);
+    pointer-events: none;
+  }
+  .hero-img-frame::after {
+    content: '';
+    position: absolute; bottom: -20px; left: -20px;
+    width: 120px; height: 120px;
+    border-bottom: 2px solid rgba(82,183,136,0.4);
+    border-left: 2px solid rgba(82,183,136,0.4);
+    pointer-events: none;
+  }
+  .hero-img-frame img {
+    width: 100%; height: 520px; object-fit: cover;
+    display: block; filter: saturate(1.1) brightness(0.92);
+  }
+  .hero-badge {
+    position: absolute; bottom: -16px; left: 32px;
+    background: var(--amber);
+    color: white; padding: 12px 20px;
+    font-size: 12px; font-weight: 600; letter-spacing: 0.06em;
+    text-transform: uppercase;
+    display: flex; align-items: center; gap: 8px;
+  }
+  .badge-dot {
+    width: 8px; height: 8px;
+    background: white; border-radius: 50%;
+    animation: pulse 2s infinite;
+  }
+  @keyframes pulse {
+    0%, 100% { opacity: 1; transform: scale(1); }
+    50%       { opacity: 0.5; transform: scale(1.4); }
+  }
+
+  /* =============================================
+     MARQUEE STRIP
+  ============================================= */
+  .marquee-strip {
+    background: var(--amber);
+    padding: 14px 0;
+    overflow: hidden;
+    position: relative;
+  }
+  .marquee-track {
+    display: flex; gap: 0;
+    animation: marquee 30s linear infinite;
+    white-space: nowrap;
+  }
+  .marquee-item {
+    flex-shrink: 0;
+    font-family: var(--font-mono);
+    font-size: 12px; letter-spacing: 0.12em; text-transform: uppercase;
+    color: var(--jungle); font-weight: 500;
+    padding: 0 40px;
+    display: flex; align-items: center; gap: 16px;
+  }
+  .marquee-item::after { content: '✦'; opacity: 0.5; }
+  @keyframes marquee {
+    from { transform: translateX(0); }
+    to   { transform: translateX(-50%); }
+  }
+
+  /* =============================================
+     SECTIONS — SHARED
+  ============================================= */
+  section { padding: 100px 0; }
+  .container {
+    max-width: 1280px; margin: 0 auto;
+    padding: 0 48px;
+  }
+  .section-eyebrow {
+    display: inline-flex; align-items: center; gap: 10px;
+    font-family: var(--font-mono);
+    font-size: 11px; letter-spacing: 0.16em; text-transform: uppercase;
+    color: var(--moss);
+    margin-bottom: 16px;
+  }
+  .section-eyebrow::before {
+    content: ''; width: 28px; height: 1px; background: var(--moss);
+  }
+  .section-title {
+    font-family: var(--font-display);
+    font-size: clamp(36px, 4vw, 60px);
+    font-weight: 900; line-height: 1.08;
+    color: var(--jungle);
+    margin-bottom: 20px;
+  }
+  .section-title em {
+    font-style: italic; color: var(--amber);
+  }
+  .section-body {
+    font-size: 17px; line-height: 1.75; font-weight: 300;
+    color: #4a5c4e; max-width: 580px;
+  }
+
+  /* Reveal animation */
+  .reveal {
+    opacity: 0; transform: translateY(32px);
+    transition: opacity 0.8s var(--ease-out), transform 0.8s var(--ease-out);
+  }
+  .reveal.visible { opacity: 1; transform: translateY(0); }
+
+  @keyframes fadeUp {
+    from { opacity: 0; transform: translateY(24px); }
+    to   { opacity: 1; transform: translateY(0); }
+  }
+  @keyframes fadeIn {
+    from { opacity: 0; }
+    to   { opacity: 1; }
+  }
+
+  /* =============================================
+     ABOUT SECTION
+  ============================================= */
+  .about-section { background: var(--cream); }
+  .about-grid {
+    display: grid; grid-template-columns: 1fr 1fr;
+    gap: 80px; align-items: center;
+  }
+  .about-images {
+    position: relative;
+    height: 540px;
+  }
+  .about-img-main {
+    position: absolute; top: 0; left: 0;
+    width: 72%; height: 420px; object-fit: cover;
+    border: 4px solid var(--parchment);
+    box-shadow: 24px 24px 60px rgba(13,40,24,0.15);
+  }
+  .about-img-secondary {
+    position: absolute; bottom: 0; right: 0;
+    width: 54%; height: 280px; object-fit: cover;
+    border: 4px solid var(--parchment);
+    box-shadow: 12px 12px 40px rgba(13,40,24,0.12);
+  }
+  .about-decade-badge {
+    position: absolute; top: 50%; left: 50%;
+    transform: translate(-50%, -50%);
+    background: var(--jungle);
+    color: white;
+    width: 96px; height: 96px;
+    border-radius: 50%;
+    display: flex; flex-direction: column; align-items: center; justify-content: center;
+    font-family: var(--font-display);
+    box-shadow: 0 0 0 6px var(--cream), 0 0 0 8px var(--fern);
+    z-index: 2;
+    text-align: center;
+  }
+  .about-decade-badge strong { font-size: 28px; font-weight: 900; color: var(--gold); line-height: 1; }
+  .about-decade-badge span { font-size: 9px; letter-spacing: 0.1em; text-transform: uppercase; color: rgba(255,255,255,0.6); margin-top: 2px; }
+
+  .about-features {
+    display: grid; grid-template-columns: 1fr 1fr;
+    gap: 20px; margin-top: 40px;
+  }
+  .feature-item {
+    padding: 20px;
+    border: 1px solid rgba(13,40,24,0.08);
+    border-left: 3px solid var(--fern);
+    background: var(--parchment);
+    transition: border-color 0.2s, transform 0.2s;
+  }
+  .feature-item:hover { border-left-color: var(--amber); transform: translateX(4px); }
+  .feature-icon { font-size: 22px; margin-bottom: 8px; }
+  .feature-title { font-size: 13px; font-weight: 600; color: var(--jungle); margin-bottom: 4px; }
+  .feature-desc { font-size: 12px; color: #7a8c7e; line-height: 1.5; }
+
+  /* =============================================
+     PRODUCTS SECTION
+  ============================================= */
+  .products-section { background: var(--jungle); }
+  .products-section .section-title { color: white; }
+  .products-section .section-eyebrow { color: var(--fern); }
+  .products-section .section-eyebrow::before { background: var(--fern); }
+  .products-section .section-body { color: rgba(255,255,255,0.55); }
+
+  .product-tabs {
+    display: flex; gap: 0;
+    border-bottom: 1px solid rgba(255,255,255,0.08);
+    margin: 48px 0 40px; overflow-x: auto;
+  }
+  .tab-btn {
+    padding: 12px 24px; background: none; border: none; cursor: pointer;
+    font-family: var(--font-mono); font-size: 11px; letter-spacing: 0.1em;
+    text-transform: uppercase; color: rgba(255,255,255,0.4);
+    border-bottom: 2px solid transparent;
+    transition: color 0.2s, border-color 0.2s;
+    white-space: nowrap;
+    position: relative; bottom: -1px;
+  }
+  .tab-btn.active { color: var(--gold); border-bottom-color: var(--gold); }
+  .tab-btn:hover:not(.active) { color: rgba(255,255,255,0.7); }
+
+  .products-grid {
+    display: none;
+    grid-template-columns: repeat(auto-fill, minmax(300px, 1fr));
+    gap: 2px;
+  }
+  .products-grid.active { display: grid; }
+
+  .product-card {
+    position: relative; overflow: hidden;
+    background: rgba(255,255,255,0.03);
+    border: 1px solid rgba(255,255,255,0.06);
+    cursor: pointer;
+    transition: background 0.3s;
+  }
+  .product-card:hover { background: rgba(255,255,255,0.07); }
+  .product-card:hover .product-img { transform: scale(1.06); }
+  .product-card:hover .product-reveal { opacity: 1; transform: translateY(0); }
+
+  .product-img-wrap {
+    height: 240px; overflow: hidden; position: relative;
+  }
+  .product-img {
+    width: 100%; height: 100%; object-fit: cover;
+    transition: transform 0.6s var(--ease-out);
+    filter: saturate(1.1) brightness(0.9);
+  }
+  .product-category-tag {
+    position: absolute; top: 12px; left: 12px;
+    background: var(--jungle); color: var(--fern);
+    font-family: var(--font-mono); font-size: 9px;
+    letter-spacing: 0.12em; text-transform: uppercase;
+    padding: 4px 10px;
+  }
+
+  .product-info {
+    padding: 24px;
+  }
+  .product-name {
+    font-family: var(--font-display);
+    font-size: 22px; font-weight: 700;
+    color: white; margin-bottom: 10px; line-height: 1.2;
+  }
+  .product-desc {
+    font-size: 13px; line-height: 1.65;
+    color: rgba(255,255,255,0.45);
+  }
+
+  .product-reveal {
+    position: absolute; bottom: 0; left: 0; right: 0;
+    background: var(--amber);
+    padding: 12px 24px;
+    color: white; font-size: 12px; font-weight: 600;
+    letter-spacing: 0.08em; text-transform: uppercase;
+    display: flex; align-items: center; justify-content: space-between;
+    opacity: 0; transform: translateY(4px);
+    transition: all 0.3s var(--ease-out);
+  }
+
+  /* =============================================
+     EXPORT SECTION
+  ============================================= */
+  .export-section {
+    background: var(--parchment);
+    position: relative; overflow: hidden;
+  }
+  .export-section::before {
+    content: 'EXPORT';
+    position: absolute; right: -40px; top: 50%;
+    transform: translateY(-50%) rotate(90deg);
+    font-family: var(--font-display); font-size: 160px; font-weight: 900;
+    color: rgba(13,40,24,0.03); line-height: 1;
+    pointer-events: none; white-space: nowrap;
+  }
+  .export-grid {
+    display: grid; grid-template-columns: 1fr 1fr;
+    gap: 80px; align-items: start;
+  }
+  .export-steps {
+    display: flex; flex-direction: column; gap: 0;
+    margin-top: 40px;
+  }
+  .export-step {
+    display: flex; gap: 24px;
+    padding: 24px 0;
+    border-bottom: 1px solid rgba(13,40,24,0.08);
+    position: relative;
+    transition: transform 0.2s;
+  }
+  .export-step:hover { transform: translateX(6px); }
+  .export-step:last-child { border-bottom: none; }
+  .step-number {
+    font-family: var(--font-display); font-size: 42px; font-weight: 900;
+    color: rgba(13,40,24,0.08); line-height: 1; flex-shrink: 0;
+    width: 52px; text-align: right;
+  }
+  .step-content {}
+  .step-title { font-size: 16px; font-weight: 600; color: var(--jungle); margin-bottom: 6px; }
+  .step-desc { font-size: 14px; color: #6a7a6e; line-height: 1.6; }
+
+  .export-right { padding-top: 20px; }
+  .cert-cards {
+    display: grid; grid-template-columns: 1fr 1fr;
+    gap: 12px; margin-top: 40px;
+  }
+  .cert-card {
+    background: white;
+    border: 1px solid rgba(13,40,24,0.08);
+    padding: 20px;
+    text-align: center;
+    box-shadow: 0 2px 16px rgba(13,40,24,0.04);
+    transition: box-shadow 0.2s, transform 0.2s;
+  }
+  .cert-card:hover { box-shadow: 0 8px 32px rgba(13,40,24,0.1); transform: translateY(-2px); }
+  .cert-icon { font-size: 28px; margin-bottom: 10px; }
+  .cert-title { font-size: 13px; font-weight: 600; color: var(--jungle); margin-bottom: 4px; }
+  .cert-desc { font-size: 11px; color: #8a9a8e; line-height: 1.5; }
+
+  .cta-export {
+    display: flex; flex-direction: column; gap: 12px;
+    margin-top: 36px;
+  }
+  .wa-btn {
+    display: inline-flex; align-items: center; gap: 12px;
+    background: #25D366; color: white;
+    padding: 16px 28px; border-radius: 2px;
+    text-decoration: none; font-weight: 600; font-size: 15px;
+    transition: background 0.2s, transform 0.2s;
+  }
+  .wa-btn:hover { background: #1da851; transform: translateY(-1px); }
+  .wa-btn svg { flex-shrink: 0; }
+  .quote-note {
+    font-size: 12px; color: #8a9a8e;
+    font-family: var(--font-mono); letter-spacing: 0.04em;
+  }
+
+  /* =============================================
+     FACILITIES SECTION
+  ============================================= */
+  .facilities-section { background: var(--cream); }
+  .facilities-header {
+    display: flex; justify-content: space-between;
+    align-items: flex-end; margin-bottom: 60px;
+    gap: 40px;
+  }
+  .facilities-grid {
+    display: grid;
+    grid-template-columns: repeat(3, 1fr);
+    grid-template-rows: auto auto;
+    gap: 2px;
+  }
+  .facility-card {
+    background: var(--parchment);
+    border: 1px solid rgba(13,40,24,0.07);
+    padding: 36px 32px;
+    position: relative; overflow: hidden;
+    transition: background 0.3s;
+  }
+  .facility-card:hover { background: var(--jungle); }
+  .facility-card:hover .facility-title { color: white; }
+  .facility-card:hover .facility-body { color: rgba(255,255,255,0.5); }
+  .facility-card:hover .facility-number { color: rgba(255,255,255,0.08); }
+  .facility-card:hover .facility-icon-bg { background: rgba(255,255,255,0.05); }
+  .facility-card.featured {
+    background: var(--moss);
+    grid-column: span 1;
+  }
+  .facility-card.featured .facility-title { color: white; }
+  .facility-card.featured .facility-body { color: rgba(255,255,255,0.6); }
+  .facility-card.featured .facility-number { color: rgba(255,255,255,0.1); }
+
+  .facility-number {
+    position: absolute; bottom: 16px; right: 20px;
+    font-family: var(--font-display); font-size: 64px; font-weight: 900;
+    color: rgba(13,40,24,0.05); line-height: 1;
+    transition: color 0.3s; pointer-events: none;
+  }
+  .facility-icon-bg {
+    width: 48px; height: 48px; border-radius: 2px;
+    background: rgba(13,40,24,0.06);
+    display: flex; align-items: center; justify-content: center;
+    margin-bottom: 20px; font-size: 22px;
+    transition: background 0.3s;
+  }
+  .facility-title {
+    font-family: var(--font-display);
+    font-size: 22px; font-weight: 700;
+    color: var(--jungle); margin-bottom: 12px;
+    line-height: 1.2; transition: color 0.3s;
+  }
+  .facility-body {
+    font-size: 14px; line-height: 1.65;
+    color: #5a6e5e; transition: color 0.3s;
+  }
+
+  /* =============================================
+     COURSE SECTION
+  ============================================= */
+  .course-section {
+    background: var(--jungle);
+    position: relative; overflow: hidden;
+  }
+  .course-section::after {
+    content: '';
+    position: absolute; top: -100px; right: -100px;
+    width: 500px; height: 500px;
+    border-radius: 50%;
+    background: radial-gradient(circle, rgba(212,140,45,0.12) 0%, transparent 70%);
+    pointer-events: none;
+  }
+  .course-inner {
+    display: grid; grid-template-columns: 1fr 1fr;
+    gap: 80px; align-items: center;
+  }
+  .course-badge-wrap {
+    display: inline-flex; align-items: center; gap: 10px;
+    background: rgba(212,140,45,0.12);
+    border: 1px solid rgba(212,140,45,0.3);
+    padding: 6px 16px; border-radius: 100px;
+    margin-bottom: 24px;
+  }
+  .live-dot {
+    width: 7px; height: 7px; border-radius: 50%;
+    background: var(--gold);
+    animation: pulse 1.5s infinite;
+  }
+  .course-badge-text {
+    font-family: var(--font-mono); font-size: 11px;
+    letter-spacing: 0.12em; text-transform: uppercase;
+    color: var(--gold);
+  }
+  .course-section .section-title { color: white; }
+  .course-desc {
+    font-size: 16px; line-height: 1.75; color: rgba(255,255,255,0.6);
+    margin-bottom: 36px;
+  }
+  .course-details {
+    display: grid; grid-template-columns: 1fr 1fr;
+    gap: 16px; margin-bottom: 40px;
+  }
+  .course-detail-item {
+    padding: 16px 20px;
+    border: 1px solid rgba(255,255,255,0.08);
+    background: rgba(255,255,255,0.03);
+  }
+  .detail-label {
+    font-family: var(--font-mono); font-size: 10px;
+    letter-spacing: 0.12em; text-transform: uppercase;
+    color: rgba(255,255,255,0.3); margin-bottom: 6px;
+  }
+  .detail-value {
+    font-size: 15px; font-weight: 600; color: white;
+  }
+  .course-visual {
+    position: relative;
+  }
+  .course-img {
+    width: 100%; height: 480px; object-fit: cover;
+    filter: brightness(0.85) saturate(1.1);
+  }
+  .course-overlay-card {
+    position: absolute; bottom: -24px; left: -24px;
+    background: var(--amber);
+    padding: 28px 32px;
+    max-width: 260px;
+  }
+  .coc-title {
+    font-family: var(--font-display); font-size: 28px; font-weight: 900;
+    color: white; line-height: 1.1; margin-bottom: 6px;
+  }
+  .coc-sub {
+    font-size: 12px; color: rgba(255,255,255,0.7);
+    letter-spacing: 0.06em; text-transform: uppercase;
+    font-family: var(--font-mono);
+  }
+
+  /* =============================================
+     TEAM SECTION
+  ============================================= */
+  .team-section { background: var(--parchment); }
+  .team-grid {
+    display: grid; grid-template-columns: repeat(3, 1fr);
+    gap: 2px; margin-top: 60px;
+  }
+  .team-card {
+    background: var(--cream);
+    border: 1px solid rgba(13,40,24,0.07);
+    overflow: hidden;
+    position: relative;
+    transition: transform 0.3s var(--ease-out);
+  }
+  .team-card:hover { transform: translateY(-6px); }
+  .team-card:hover .team-img { filter: saturate(1.1) brightness(0.95); }
+  .team-img-wrap { height: 320px; overflow: hidden; }
+  .team-img {
+    width: 100%; height: 100%; object-fit: cover; object-position: center 25%;
+    filter: saturate(0.9) brightness(0.95);
+    transition: filter 0.4s;
+  }
+  .team-info {
+    padding: 24px 24px 28px;
+    border-top: 3px solid var(--fern);
+  }
+  .team-name {
+    font-family: var(--font-display); font-size: 22px; font-weight: 700;
+    color: var(--jungle); margin-bottom: 4px;
+  }
+  .team-role {
+    font-family: var(--font-mono); font-size: 11px;
+    letter-spacing: 0.1em; text-transform: uppercase;
+    color: var(--amber);
+  }
+
+  /* =============================================
+     CONTACT SECTION
+  ============================================= */
+  .contact-section { background: var(--jungle); padding: 100px 0; }
+  .contact-grid {
+    display: grid; grid-template-columns: 1fr 1fr;
+    gap: 80px; align-items: start;
+  }
+  .contact-section .section-title { color: white; }
+  .contact-section .section-body { color: rgba(255,255,255,0.5); margin-top: 16px; }
+  .contact-items {
+    display: flex; flex-direction: column; gap: 20px;
+    margin-top: 48px;
+  }
+  .contact-item {
+    display: flex; align-items: flex-start; gap: 16px;
+    padding: 20px 24px;
+    border: 1px solid rgba(255,255,255,0.06);
+    background: rgba(255,255,255,0.03);
+    text-decoration: none;
+    transition: background 0.2s, border-color 0.2s;
+  }
+  .contact-item:hover { background: rgba(255,255,255,0.07); border-color: rgba(82,183,136,0.3); }
+  .contact-icon {
+    width: 40px; height: 40px; border-radius: 2px;
+    background: rgba(82,183,136,0.1);
+    display: flex; align-items: center; justify-content: center;
+    flex-shrink: 0; font-size: 18px;
+  }
+  .contact-label {
+    font-family: var(--font-mono); font-size: 10px;
+    letter-spacing: 0.12em; text-transform: uppercase;
+    color: rgba(255,255,255,0.3); margin-bottom: 4px;
+  }
+  .contact-value {
+    font-size: 15px; font-weight: 500; color: white;
+  }
+
+  .contact-form {
+    display: flex; flex-direction: column; gap: 16px;
+  }
+  .form-row { display: grid; grid-template-columns: 1fr 1fr; gap: 16px; }
+  .form-group { display: flex; flex-direction: column; gap: 6px; }
+  .form-group label {
+    font-family: var(--font-mono); font-size: 10px;
+    letter-spacing: 0.1em; text-transform: uppercase;
+    color: rgba(255,255,255,0.4);
+  }
+  .form-group input,
+  .form-group select,
+  .form-group textarea {
+    background: rgba(255,255,255,0.05);
+    border: 1px solid rgba(255,255,255,0.1);
+    color: white; padding: 14px 16px;
+    font-family: var(--font-body); font-size: 14px;
+    outline: none; border-radius: 0;
+    transition: border-color 0.2s;
+    width: 100%;
+  }
+  .form-group input::placeholder,
+  .form-group textarea::placeholder { color: rgba(255,255,255,0.25); }
+  .form-group input:focus,
+  .form-group select:focus,
+  .form-group textarea:focus { border-color: var(--fern); }
+  .form-group select option { background: var(--jungle); color: white; }
+  .form-group textarea { resize: vertical; min-height: 120px; }
+
+  /* =============================================
+     FOOTER
+  ============================================= */
+  footer {
+    background: #070f0a;
+    padding: 48px 0 32px;
+  }
+  .footer-inner {
+    max-width: 1280px; margin: 0 auto; padding: 0 48px;
+    display: flex; justify-content: space-between;
+    align-items: center; flex-wrap: wrap; gap: 24px;
+  }
+  .footer-logo img {
+    height: 36px; filter: brightness(0) invert(1); opacity: 0.6;
+  }
+  .footer-links {
+    display: flex; gap: 32px; list-style: none;
+  }
+  .footer-links a {
+    text-decoration: none;
+    font-size: 12px; letter-spacing: 0.08em; text-transform: uppercase;
+    color: rgba(255,255,255,0.3);
+    transition: color 0.2s; font-family: var(--font-mono);
+  }
+  .footer-links a:hover { color: var(--fern); }
+  .footer-copy {
+    font-size: 12px; color: rgba(255,255,255,0.2);
+    font-family: var(--font-mono);
+  }
+
+  /* =============================================
+     FLOATING WHATSAPP
+  ============================================= */
+  .wa-float {
+    position: fixed; bottom: 28px; right: 28px; z-index: 999;
+    display: flex; align-items: center; gap: 10px;
+    background: #25D366; color: white;
+    padding: 14px 20px; border-radius: 40px;
+    text-decoration: none; font-weight: 600; font-size: 14px;
+    box-shadow: 0 4px 24px rgba(37,211,102,0.4);
+    transition: transform 0.2s, box-shadow 0.2s;
+    animation: fadeUp 0.9s var(--ease-out) 1.2s both;
+  }
+  .wa-float:hover { transform: translateY(-3px); box-shadow: 0 8px 32px rgba(37,211,102,0.5); }
+  .wa-float-label { display: block; }
+
+  /* =============================================
+     RESPONSIVE
+  ============================================= */
+  @media (max-width: 1024px) {
+    nav { padding: 16px 24px; }
+    nav.scrolled { padding: 12px 24px; }
+    .nav-links { gap: 20px; }
+    .hero-inner { padding: 100px 24px 60px; gap: 40px; }
+    .container { padding: 0 24px; }
+    .about-grid,
+    .export-grid,
+    .course-inner,
+    .contact-grid { grid-template-columns: 1fr; gap: 48px; }
+    .about-images { height: 360px; }
+    .about-img-main { width: 80%; height: 300px; }
+    .about-img-secondary { width: 60%; height: 200px; }
+    .facilities-grid { grid-template-columns: 1fr 1fr; }
+    .team-grid { grid-template-columns: 1fr 1fr; }
+    .export-section::before { display: none; }
+  }
+
+  @media (max-width: 768px) {
+    .nav-links { display: none; }
+    .nav-links.open {
+      display: flex; flex-direction: column;
+      position: fixed; top: 0; left: 0; right: 0; bottom: 0;
+      background: var(--jungle); z-index: 99;
+      align-items: center; justify-content: center; gap: 32px;
+    }
+    .nav-links.open a { font-size: 18px; }
+    .nav-toggle { display: flex; z-index: 101; }
+    .hero-inner { grid-template-columns: 1fr; padding-top: 100px; }
+    .hero-visual { display: none; }
+    .hero-stats { grid-template-columns: 1fr; }
+    .hero-actions { flex-direction: column; align-items: flex-start; }
+    .about-features { grid-template-columns: 1fr; }
+    .products-grid { grid-template-columns: 1fr 1fr; }
+    .facilities-grid { grid-template-columns: 1fr; }
+    .cert-cards { grid-template-columns: 1fr; }
+    .course-details { grid-template-columns: 1fr; }
+    .team-grid { grid-template-columns: 1fr; }
+    .footer-inner { flex-direction: column; text-align: center; }
+    .footer-links { flex-wrap: wrap; justify-content: center; }
+    section { padding: 64px 0; }
+    .wa-float-label { display: none; }
+    .wa-float { padding: 14px; border-radius: 50%; }
+    .form-row { grid-template-columns: 1fr; }
+  }
+
+  @media (max-width: 480px) {
+    .products-grid { grid-template-columns: 1fr; }
+    .hero-title { font-size: 40px; }
+    .course-overlay-card { display: none; }
+  }
+</style>
+</head>
+<body>
+
+<!-- ============ FLOATING WHATSAPP ============ -->
+<a href="https://wa.me/94717056538?text=Hello%20Ranmal%20Flora!%20I%20am%20interested%20in%20your%20tissue%20culture%20plants."
+   class="wa-float" target="_blank" rel="noopener" aria-label="Chat on WhatsApp">
+  <svg width="20" height="20" viewBox="0 0 24 24" fill="currentColor">
+    <path d="M17.472 14.382c-.297-.149-1.758-.867-2.03-.967-.273-.099-.471-.148-.67.15-.197.297-.767.966-.94 1.164-.173.199-.347.223-.644.075-.297-.15-1.255-.463-2.39-1.475-.883-.788-1.48-1.761-1.653-2.059-.173-.297-.018-.458.13-.606.134-.133.298-.347.446-.52.149-.174.198-.298.298-.497.099-.198.05-.371-.025-.52-.075-.149-.669-1.612-.916-2.207-.242-.579-.487-.5-.669-.51-.173-.008-.371-.01-.57-.01-.198 0-.52.074-.792.372-.272.297-1.04 1.016-1.04 2.479 0 1.462 1.065 2.875 1.213 3.074.149.198 2.096 3.2 5.077 4.487.709.306 1.262.489 1.694.625.712.227 1.36.195 1.871.118.571-.085 1.758-.719 2.006-1.413.248-.694.248-1.289.173-1.413-.074-.124-.272-.198-.57-.347m-5.421 7.403h-.004a9.87 9.87 0 01-5.031-1.378l-.361-.214-3.741.982.998-3.648-.235-.374a9.86 9.86 0 01-1.51-5.26c.001-5.45 4.436-9.884 9.888-9.884 2.64 0 5.122 1.03 6.988 2.898a9.825 9.825 0 012.893 6.994c-.003 5.45-4.437 9.884-9.885 9.884m8.413-18.297A11.815 11.815 0 0012.05 0C5.495 0 .16 5.335.157 11.892c0 2.096.547 4.142 1.588 5.945L.057 24l6.305-1.654a11.882 11.882 0 005.683 1.448h.005c6.554 0 11.89-5.335 11.893-11.893a11.821 11.821 0 00-3.48-8.413z"/>
+  </svg>
+  <span class="wa-float-label">WhatsApp Us</span>
+</a>
+
+<!-- ============ NAV ============ -->
+<nav id="mainNav" role="navigation" aria-label="Main navigation">
+  <a href="#" class="nav-logo" aria-label="Ranmal Flora home">
+    <img src="images/logo.png" alt="Ranmal Flora logo"/>
+  </a>
+  <ul class="nav-links" id="navLinks">
+    <li><a href="#about">About</a></li>
+    <li><a href="#products">Products</a></li>
+    <li><a href="#export">Export</a></li>
+    <li><a href="#facilities">Facilities</a></li>
+    <li><a href="#course">Course</a></li>
+    <li><a href="#contact">Contact</a></li>
+    <li><a href="https://wa.me/94717056538" class="nav-cta" target="_blank" rel="noopener">Get a Quote</a></li>
+  </ul>
+  <button class="nav-toggle" id="navToggle" aria-label="Toggle menu" aria-expanded="false">
+    <span></span><span></span><span></span>
+  </button>
+</nav>
+
+<!-- ============ HERO ============ -->
+<section class="hero" aria-label="Hero section">
+  <div class="hero-bg"></div>
+  <div class="leaf-canvas" aria-hidden="true">
+    <div class="leaf">
+      <svg viewBox="0 0 200 300" xmlns="http://www.w3.org/2000/svg">
+        <path d="M100 10 C160 60 180 140 100 290 C20 140 40 60 100 10Z"/>
+      </svg>
+    </div>
+    <div class="leaf">
+      <svg viewBox="0 0 200 300" xmlns="http://www.w3.org/2000/svg">
+        <path d="M100 10 C160 60 180 140 100 290 C20 140 40 60 100 10Z"/>
+      </svg>
+    </div>
+    <div class="leaf">
+      <svg viewBox="0 0 200 300" xmlns="http://www.w3.org/2000/svg">
+        <path d="M100 10 C160 60 180 140 100 290 C20 140 40 60 100 10Z"/>
+      </svg>
+    </div>
+    <div class="leaf">
+      <svg viewBox="0 0 200 300" xmlns="http://www.w3.org/2000/svg">
+        <path d="M100 10 C160 60 180 140 100 290 C20 140 40 60 100 10Z"/>
+      </svg>
+    </div>
+  </div>
+
+  <div class="hero-inner">
+    <div class="hero-content">
+      <div class="hero-eyebrow">Sri Lanka's Leading Tissue Culture Lab</div>
+      <h1 class="hero-title">
+        Rooted in Science,<br/>
+        <em>Grown for the World</em>
+      </h1>
+      <p class="hero-desc">
+        From our state-of-the-art laboratory in Sri Lanka, we precision-propagate over 1.2 million disease-free plants annually — bananas, rare tropicals, floriculture, and medicinal crops — ready for commercial farms, nurseries, and home growers worldwide.
+      </p>
+      <div class="hero-actions">
+        <a href="#products" class="btn-primary">
+          Explore Our Plants
+          <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><path d="M5 12h14M12 5l7 7-7 7"/></svg>
+        </a>
+        <a href="#export" class="btn-outline">
+          International Buyers
+          <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><circle cx="12" cy="12" r="10"/><path d="M2 12h20M12 2a15.3 15.3 0 0 1 4 10 15.3 15.3 0 0 1-4 10 15.3 15.3 0 0 1-4-10 15.3 15.3 0 0 1 4-10z"/></svg>
+        </a>
+      </div>
+      <div class="hero-stats">
+        <div class="stat">
+          <div class="stat-number">1.2M+</div>
+          <div class="stat-label">Plants / Year</div>
+        </div>
+        <div class="stat">
+          <div class="stat-number">10+</div>
+          <div class="stat-label">Years of Expertise</div>
+        </div>
+        <div class="stat">
+          <div class="stat-number">5+</div>
+          <div class="stat-label">Product Categories</div>
+        </div>
+      </div>
+    </div>
+
+    <div class="hero-visual">
+      <div class="hero-img-frame">
+        <img src="images/hero.jpg"
+             alt="Ranmal Flora tissue culture laboratory — precision plant propagation"/>
+        <div class="hero-badge">
+          <div class="badge-dot"></div>
+          Active Production — 2026
+        </div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- ============ MARQUEE ============ -->
+<div class="marquee-strip" aria-hidden="true">
+  <div class="marquee-track">
+    <!-- Duplicated for seamless loop -->
+    <span class="marquee-item">Tissue Culture Excellence</span>
+    <span class="marquee-item">Disease-Free Propagation</span>
+    <span class="marquee-item">Commercial & Home Growers</span>
+    <span class="marquee-item">Bananas · Anthuriums · Philodendrons</span>
+    <span class="marquee-item">International Shipping Available</span>
+    <span class="marquee-item">Sri Lanka's Finest Plant Factory</span>
+    <span class="marquee-item">6 Million Plants Capacity Expansion</span>
+    <span class="marquee-item">Certificate Course — 2026 Intake Open</span>
+    <span class="marquee-item">Tissue Culture Excellence</span>
+    <span class="marquee-item">Disease-Free Propagation</span>
+    <span class="marquee-item">Commercial & Home Growers</span>
+    <span class="marquee-item">Bananas · Anthuriums · Philodendrons</span>
+    <span class="marquee-item">International Shipping Available</span>
+    <span class="marquee-item">Sri Lanka's Finest Plant Factory</span>
+    <span class="marquee-item">6 Million Plants Capacity Expansion</span>
+    <span class="marquee-item">Certificate Course — 2026 Intake Open</span>
+  </div>
+</div>
+
+<!-- ============ ABOUT ============ -->
+<section class="about-section" id="about">
+  <div class="container">
+    <div class="about-grid">
+      <div class="about-images reveal">
+        <img src="images/about-production.jpg"
+             alt="Ranmal Flora production facility" class="about-img-main"/>
+        <img src="images/about-growth-rooms.jpg"
+             alt="Growth rooms at Ranmal Flora" class="about-img-secondary"/>
+        <div class="about-decade-badge" aria-label="10 plus years of experience">
+          <strong>10+</strong>
+          <span>Years</span>
+        </div>
+      </div>
+      <div class="reveal" style="transition-delay:0.15s">
+        <div class="section-eyebrow">Who We Are</div>
+        <h2 class="section-title">Where Science Meets<br/><em>Living Nature</em></h2>
+        <p class="section-body">
+          Ranmal Flora is Sri Lanka's foremost tissue culture laboratory — a place where cutting-edge biotechnology and deep horticultural knowledge converge. We manage the complete journey from cell initiation to field-ready plantlets, delivering genetically uniform, pathogen-free plants to growers across Sri Lanka and beyond.
+        </p>
+        <p class="section-body" style="margin-top:16px;">
+          Our state-of-the-art, environmentally controlled plant factory currently produces 1.2 million plants annually. With a planned five-story expansion, we are scaling to 6 million plants per year — ready to meet the world's growing demand for clean, high-performance planting material.
+        </p>
+        <div class="about-features">
+          <div class="feature-item reveal" style="transition-delay:0.2s">
+            <div class="feature-icon">🔬</div>
+            <div class="feature-title">Sterile Lab Propagation</div>
+            <div class="feature-desc">10 laminar flow workstations producing 100,000+ plants monthly.</div>
+          </div>
+          <div class="feature-item reveal" style="transition-delay:0.3s">
+            <div class="feature-icon">🌡️</div>
+            <div class="feature-title">Controlled Growth Rooms</div>
+            <div class="feature-desc">3 climate-controlled rooms, 500,000+ plant capacity each.</div>
+          </div>
+          <div class="feature-item reveal" style="transition-delay:0.4s">
+            <div class="feature-icon">🌱</div>
+            <div class="feature-title">Quality Nurseries</div>
+            <div class="feature-desc">100,000-plant nurseries with designated potting media & monitoring.</div>
+          </div>
+          <div class="feature-item reveal" style="transition-delay:0.5s">
+            <div class="feature-icon">👥</div>
+            <div class="feature-title">Expert Team</div>
+            <div class="feature-desc">16 full-time specialists led by a director with 20+ years experience.</div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- ============ PRODUCTS ============ -->
+<section class="products-section" id="products">
+  <div class="container">
+    <div style="display:flex;justify-content:space-between;align-items:flex-end;flex-wrap:wrap;gap:24px;">
+      <div class="reveal">
+        <div class="section-eyebrow">Our Plants</div>
+        <h2 class="section-title" style="color:white;">Precision-Grown,<br/><em>World-Ready</em></h2>
+      </div>
+      <p class="section-body reveal" style="max-width:420px;transition-delay:0.1s;">
+        Every plant in our catalogue is propagated from clean, certified mother stock — uniform in genetics, free from pathogens, and optimised for commercial yield and survival.
+      </p>
+    </div>
+
+    <div class="product-tabs" role="tablist">
+      <button class="tab-btn active" data-tab="fruits" role="tab" aria-selected="true">Fruit Plants</button>
+      <button class="tab-btn" data-tab="flowers" role="tab" aria-selected="false">Flowers</button>
+      <button class="tab-btn" data-tab="foliage" role="tab" aria-selected="false">Foliage</button>
+      <button class="tab-btn" data-tab="medicinal" role="tab" aria-selected="false">Medicinal</button>
+      <button class="tab-btn" data-tab="aquatic" role="tab" aria-selected="false">Aquatic</button>
+    </div>
+
+    <!-- FRUITS -->
+    <div class="products-grid active" id="tab-fruits" role="tabpanel">
+      <div class="product-card reveal">
+        <div class="product-img-wrap">
+          <img src="images/product-banana.jpeg"
+               alt="Banana tissue culture plants" class="product-img" loading="lazy"/>
+          <span class="product-category-tag">Fruit</span>
+        </div>
+        <div class="product-info">
+          <h3 class="product-name">Banana Varieties</h3>
+          <p class="product-desc">Five premium varieties — Cavendish, Ambun, Kolikuttu, Red Banana, and Sour Banana — all propagated via tissue culture for exceptional uniformity, superior disease resistance, and consistently high yields. Whether for large-scale commercial farming, export operations, or home gardens, our banana plants arrive vigorous, pathogen-free, and ready to establish rapidly in tropical climates.</p>
+        </div>
+        <div class="product-reveal">Inquire for Wholesale Pricing <span>→</span></div>
+      </div>
+      <div class="product-card reveal" style="transition-delay:0.1s">
+        <div class="product-img-wrap">
+          <img src="images/product-pineapple.jpg"
+               alt="Pineapple tissue culture plants" class="product-img" loading="lazy"/>
+          <span class="product-category-tag">Fruit</span>
+        </div>
+        <div class="product-info">
+          <h3 class="product-name">Pineapple</h3>
+          <p class="product-desc">Tissue-cultured pineapple plants bred for uniform growth, accelerated fruiting cycles, and outstanding disease resistance. Ideal for commercial tropical farms and home growing alike, these plants thrive in full sun with well-drained soil — delivering sweet, high-Brix fruit with reliable consistency from plant to plant.</p>
+        </div>
+        <div class="product-reveal">Inquire for Wholesale Pricing <span>→</span></div>
+      </div>
+    </div>
+
+    <!-- FLOWERS -->
+    <div class="products-grid" id="tab-flowers" role="tabpanel">
+      <div class="product-card reveal">
+        <div class="product-img-wrap">
+          <img src="images/product-peace-lily.jpg"
+               alt="Peace Lily plant" class="product-img" loading="lazy"/>
+          <span class="product-category-tag">Flower</span>
+        </div>
+        <div class="product-info">
+          <h3 class="product-name">Peace Lily</h3>
+          <p class="product-desc">An enduring icon of indoor elegance — the Peace Lily combines sculpted white spathes with deep, lustrous foliage and proven air-purifying properties. Tissue-cultured for flawless uniformity, our plants establish quickly in low-to-medium light, demand only moderate watering, and reward any interior with a sense of living calm. Perfect for homes, hotels, offices, and wellness spaces.</p>
+        </div>
+        <div class="product-reveal">Inquire for Wholesale Pricing <span>→</span></div>
+      </div>
+      <div class="product-card reveal" style="transition-delay:0.1s">
+        <div class="product-img-wrap">
+          <img src="images/product-anthurium.jpg"
+               alt="Anthurium multicolor" class="product-img" loading="lazy"/>
+          <span class="product-category-tag">Flower</span>
+        </div>
+        <div class="product-info">
+          <h3 class="product-name">Anthurium</h3>
+          <p class="product-desc">Our laboratory-propagated Anthurium collection spans a vivid spectrum of multicolor varieties — crimson, blush pink, ivory, and tangerine — each featuring the signature heart-shaped spathe and lacquered leaf that have made Anthuriums one of the world's most sought-after tropical flowers. Uniformly grown for long-lasting blooms, they are equally at home in luxury interiors, retail gifting, and large-scale commercial floriculture.</p>
+        </div>
+        <div class="product-reveal">Inquire for Wholesale Pricing <span>→</span></div>
+      </div>
+    </div>
+
+    <!-- FOLIAGE -->
+    <div class="products-grid" id="tab-foliage" role="tabpanel">
+      <div class="product-card reveal">
+        <div class="product-img-wrap">
+          <img src="images/product-ring-of-fire.jpg"
+               alt="Philodendron Ring of Fire" class="product-img" loading="lazy"/>
+          <span class="product-category-tag">Foliage</span>
+        </div>
+        <div class="product-info">
+          <h3 class="product-name">Ring of Fire</h3>
+          <p class="product-desc">A collector's crown jewel. The Philodendron Ring of Fire commands attention with its dramatically serrated leaves blazing through shades of red, orange, yellow, and green — nature's own stained glass. Tissue-cultured for stable variegation and healthy establishment, each plant is an investment-grade addition to any rare plant collection or premium retail offer.</p>
+        </div>
+        <div class="product-reveal">Inquire for Wholesale Pricing <span>→</span></div>
+      </div>
+      <div class="product-card reveal" style="transition-delay:0.1s">
+        <div class="product-img-wrap">
+          <img src="images/product-florida-beauty.jpg"
+               alt="Philodendron Florida Beauty" class="product-img" loading="lazy"/>
+          <span class="product-category-tag">Foliage</span>
+        </div>
+        <div class="product-info">
+          <h3 class="product-name">Florida Beauty</h3>
+          <p class="product-desc">Rare, radiant, and remarkably easy to grow — the Philodendron Florida Beauty showcases deeply lobed leaves dressed in sweeping cream and yellow variegation that intensifies with maturity. A high-demand variety among collectors and interior landscapers, available from our tissue culture lab in consistent, healthy batches ideal for nursery retail and wholesale supply.</p>
+        </div>
+        <div class="product-reveal">Inquire for Wholesale Pricing <span>→</span></div>
+      </div>
+      <div class="product-card reveal" style="transition-delay:0.2s">
+        <div class="product-img-wrap">
+          <img src="images/product-caramel-marble.jpeg"
+               alt="Philodendron Caramel Marble" class="product-img" loading="lazy"/>
+          <span class="product-category-tag">Foliage</span>
+        </div>
+        <div class="product-info">
+          <h3 class="product-name">Caramel Marble</h3>
+          <p class="product-desc">A rare Philodendron variety that reads like warm abstract art — swirling caramel, forest green, and creamy white variegation across every unfurling leaf. Grown through tissue culture for healthy, uniform plants with robust root systems, the Caramel Marble is a premium addition to collector catalogues and high-end plant retail.</p>
+        </div>
+        <div class="product-reveal">Inquire for Wholesale Pricing <span>→</span></div>
+      </div>
+      <div class="product-card reveal" style="transition-delay:0.3s">
+        <div class="product-img-wrap">
+          <img src="images/product-anthurium-hookeri.jpeg"
+               alt="Anthurium Hookeri Ruffles" class="product-img" loading="lazy"/>
+          <span class="product-category-tag">Foliage</span>
+        </div>
+        <div class="product-info">
+          <h3 class="product-name">Anthurium Hookeri Ruffles</h3>
+          <p class="product-desc">Bold, sculptural, and instantly recognisable — the Hookeri Ruffles brings large, dramatically wave-edged leaves that transform any space into a tropical sanctuary. It thrives with minimal care in shaded or indoor settings, making it a favourite of landscapers and plant enthusiasts who want maximum visual impact without high maintenance.</p>
+        </div>
+        <div class="product-reveal">Inquire for Wholesale Pricing <span>→</span></div>
+      </div>
+    </div>
+
+    <!-- MEDICINAL -->
+    <div class="products-grid" id="tab-medicinal" role="tabpanel">
+      <div class="product-card reveal">
+        <div class="product-img-wrap">
+          <img src="images/product-aloe-vera.jpg"
+               alt="Aloe Vera plants" class="product-img" loading="lazy"/>
+          <span class="product-category-tag">Medicinal</span>
+        </div>
+        <div class="product-info">
+          <h3 class="product-name">Aloe Vera</h3>
+          <p class="product-desc">One of the world's most commercially valuable medicinal plants, our Aloe Vera is tissue-cultured for exceptional gel content, vigorous drought tolerance, and consistent growth across large plantings. Suitable for commercial wellness extract production, natural skincare brands, pharmaceutical suppliers, and home garden use — each plant arrives disease-free with a strong, well-developed root system.</p>
+        </div>
+        <div class="product-reveal">Inquire for Wholesale Pricing <span>→</span></div>
+      </div>
+    </div>
+
+    <!-- AQUATIC -->
+    <div class="products-grid" id="tab-aquatic" role="tabpanel">
+      <div class="product-card reveal">
+        <div class="product-img-wrap">
+          <img src="images/product-lotus-water-lily.jpeg"
+               alt="Lotus and Water Lily plants" class="product-img" loading="lazy"/>
+          <span class="product-category-tag">Aquatic</span>
+        </div>
+        <div class="product-info">
+          <h3 class="product-name">Lotus & Water Lily</h3>
+          <p class="product-desc">From serene pinks and whites to vivid blues and golden yellows, our Lotus and Water Lily collection transforms any water garden, pond, or decorative vessel into a living masterpiece. Each variety is carefully propagated for reliable flowering, vigorous growth, and cultural adaptability — perfect for landscape designers, garden centres, resort water features, and aquatic plant enthusiasts.</p>
+        </div>
+        <div class="product-reveal">Inquire for Wholesale Pricing <span>→</span></div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- ============ EXPORT ============ -->
+<section class="export-section" id="export">
+  <div class="container">
+    <div class="export-grid">
+      <div class="reveal">
+        <div class="section-eyebrow">International Buyers</div>
+        <h2 class="section-title">We Ship<br/><em>Worldwide</em></h2>
+        <p class="section-body">
+          From our laboratory in Sri Lanka to nurseries, farms, and wholesale buyers across the globe — Ranmal Flora handles every step of the international plant export process with precision and care.
+        </p>
+        <div class="export-steps">
+          <div class="export-step reveal" style="transition-delay:0.1s">
+            <div class="step-number">01</div>
+            <div class="step-content">
+              <div class="step-title">Grading & Sterile Packing</div>
+              <div class="step-desc">Plants are carefully graded by size, leaf count, and vigour, then packed in sterile, temperature-controlled insulated boxes — clearly labelled as "Live Plants / Perishables" for customs handlers.</div>
+            </div>
+          </div>
+          <div class="export-step reveal" style="transition-delay:0.2s">
+            <div class="step-number">02</div>
+            <div class="step-content">
+              <div class="step-title">Phytosanitary Certification</div>
+              <div class="step-desc">All export shipments are accompanied by government-issued phytosanitary certificates, ensuring full compliance with destination country import regulations — EU, USDA, ASEAN, and beyond.</div>
+            </div>
+          </div>
+          <div class="export-step reveal" style="transition-delay:0.3s">
+            <div class="step-number">03</div>
+            <div class="step-content">
+              <div class="step-title">Air Cargo Delivery</div>
+              <div class="step-desc">We ship via air cargo with experienced international clearing agents, coordinating end-to-end documentation for a smooth, delay-free delivery to your country.</div>
+            </div>
+          </div>
+          <div class="export-step reveal" style="transition-delay:0.4s">
+            <div class="step-number">04</div>
+            <div class="step-content">
+              <div class="step-title">Post-Delivery Technical Support</div>
+              <div class="step-desc">Our team provides hardening guidance after delivery — including growing media recommendations, misting schedules, fertilising protocols, and pest control during the critical establishment phase.</div>
+            </div>
+          </div>
+        </div>
+      </div>
+
+      <div class="export-right reveal" style="transition-delay:0.2s">
+        <div class="section-eyebrow">Why Source From Us</div>
+        <h3 class="section-title" style="font-size:clamp(28px,3vw,42px);">Built for<br/><em>Commercial Scale</em></h3>
+        <p class="section-body">Wholesale buyers, nurseries, and large-scale farms trust Ranmal Flora for consistent quality, reliable supply, and straightforward export logistics.</p>
+
+        <div class="cert-cards">
+          <div class="cert-card reveal" style="transition-delay:0.25s">
+            <div class="cert-icon">🌿</div>
+            <div class="cert-title">Disease-Free Guarantee</div>
+            <div class="cert-desc">Every plant propagated from certified, virus-tested mother stock.</div>
+          </div>
+          <div class="cert-card reveal" style="transition-delay:0.35s">
+            <div class="cert-icon">📋</div>
+            <div class="cert-title">Phytosanitary Docs</div>
+            <div class="cert-desc">Full export compliance documentation for all international orders.</div>
+          </div>
+          <div class="cert-card reveal" style="transition-delay:0.45s">
+            <div class="cert-icon">✈️</div>
+            <div class="cert-title">Air Cargo Logistics</div>
+            <div class="cert-desc">Temperature-stable air freight with experienced clearing agents.</div>
+          </div>
+          <div class="cert-card reveal" style="transition-delay:0.55s">
+            <div class="cert-icon">🔧</div>
+            <div class="cert-title">Post-Arrival Support</div>
+            <div class="cert-desc">Expert hardening guidance from our team after your plants land.</div>
+          </div>
+        </div>
+
+        <div class="cta-export">
+          <a href="https://wa.me/94717056538?text=Hello!%20I%20am%20interested%20in%20international%20wholesale%20orders%20from%20Ranmal%20Flora."
+             class="wa-btn" target="_blank" rel="noopener">
+            <svg width="22" height="22" viewBox="0 0 24 24" fill="currentColor">
+              <path d="M17.472 14.382c-.297-.149-1.758-.867-2.03-.967-.273-.099-.471-.148-.67.15-.197.297-.767.966-.94 1.164-.173.199-.347.223-.644.075-.297-.15-1.255-.463-2.39-1.475-.883-.788-1.48-1.761-1.653-2.059-.173-.297-.018-.458.13-.606.134-.133.298-.347.446-.52.149-.174.198-.298.298-.497.099-.198.05-.371-.025-.52-.075-.149-.669-1.612-.916-2.207-.242-.579-.487-.5-.669-.51-.173-.008-.371-.01-.57-.01-.198 0-.52.074-.792.372-.272.297-1.04 1.016-1.04 2.479 0 1.462 1.065 2.875 1.213 3.074.149.198 2.096 3.2 5.077 4.487.709.306 1.262.489 1.694.625.712.227 1.36.195 1.871.118.571-.085 1.758-.719 2.006-1.413.248-.694.248-1.289.173-1.413-.074-.124-.272-.198-.57-.347m-5.421 7.403h-.004a9.87 9.87 0 01-5.031-1.378l-.361-.214-3.741.982.998-3.648-.235-.374a9.86 9.86 0 01-1.51-5.26c.001-5.45 4.436-9.884 9.888-9.884 2.64 0 5.122 1.03 6.988 2.898a9.825 9.825 0 012.893 6.994c-.003 5.45-4.437 9.884-9.885 9.884m8.413-18.297A11.815 11.815 0 0012.05 0C5.495 0 .16 5.335.157 11.892c0 2.096.547 4.142 1.588 5.945L.057 24l6.305-1.654a11.882 11.882 0 005.683 1.448h.005c6.554 0 11.89-5.335 11.893-11.893a11.821 11.821 0 00-3.48-8.413z"/>
+            </svg>
+            Request a Wholesale Quote
+          </a>
+          <p class="quote-note">→ Response within 48 hours · MOQ enquiries welcome</p>
+        </div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- ============ FACILITIES ============ -->
+<section class="facilities-section" id="facilities">
+  <div class="container">
+    <div class="facilities-header">
+      <div class="reveal">
+        <div class="section-eyebrow">Our Infrastructure</div>
+        <h2 class="section-title">Built for<br/><em>Precision at Scale</em></h2>
+      </div>
+      <p class="section-body reveal" style="transition-delay:0.1s;">
+        Our facility is engineered around one goal: producing the world's cleanest, most vigorous tissue-culture plants — at volume, consistently, year-round.
+      </p>
+    </div>
+    <div class="facilities-grid">
+      <div class="facility-card reveal">
+        <div class="facility-icon-bg">🧫</div>
+        <div class="facility-title">Laminar Flow Lab</div>
+        <div class="facility-body">10 fully equipped workstations operating in a fully sterile laminar room, producing over 100,000 plants monthly under aseptic conditions.</div>
+        <div class="facility-number">01</div>
+      </div>
+      <div class="facility-card featured reveal" style="transition-delay:0.1s">
+        <div class="facility-icon-bg" style="background:rgba(255,255,255,0.12);">🌡️</div>
+        <div class="facility-title">3 Climate-Controlled Growth Rooms</div>
+        <div class="facility-body">Each growth room maintains precise temperature, humidity, and photoperiod for optimal plantlet development — combined capacity exceeding 500,000 plants at any time.</div>
+        <div class="facility-number">02</div>
+      </div>
+      <div class="facility-card reveal" style="transition-delay:0.2s">
+        <div class="facility-icon-bg">⚗️</div>
+        <div class="facility-title">Media Production Room</div>
+        <div class="facility-body">50 litres of specialised culture media produced daily, with a four-day buffer storage — ensuring uninterrupted production capacity.</div>
+        <div class="facility-number">03</div>
+      </div>
+      <div class="facility-card reveal" style="transition-delay:0.1s">
+        <div class="facility-icon-bg">🪴</div>
+        <div class="facility-title">Acclimatisation Nurseries</div>
+        <div class="facility-body">100,000-plant nursery capacity with dedicated sterile potting media and carefully managed shade-to-sun hardening zones that guarantee field-ready vigour.</div>
+        <div class="facility-number">04</div>
+      </div>
+      <div class="facility-card reveal" style="transition-delay:0.2s">
+        <div class="facility-icon-bg">📈</div>
+        <div class="facility-title">Expansion to 6M Plants/yr</div>
+        <div class="facility-body">Our five-story dedicated facility expansion — each floor exceeding 2,000 sq ft — is underway, targeting 6 million plants annually for the global market.</div>
+        <div class="facility-number">05</div>
+      </div>
+      <div class="facility-card reveal" style="transition-delay:0.3s">
+        <div class="facility-icon-bg">👩‍🔬</div>
+        <div class="facility-title">Expert Team of 21</div>
+        <div class="facility-body">16 full-time and 5 part-time specialists, guided by a managing director with over 20 years of agricultural science and management expertise.</div>
+        <div class="facility-number">06</div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- ============ COURSE ============ -->
+<section class="course-section" id="course">
+  <div class="container">
+    <div class="course-inner">
+      <div class="reveal">
+        <div class="course-badge-wrap">
+          <div class="live-dot"></div>
+          <span class="course-badge-text">Applications Now Open</span>
+        </div>
+        <h2 class="section-title">Certificate Course<br/>in <em>Tissue Culture</em></h2>
+        <p class="course-desc">
+          Learn the science of plant tissue culture directly from Sri Lanka's leading production laboratory. Our certificate programme offers hands-on training in real lab conditions — from media preparation and sterile technique to plantlet acclimatisation and commercial propagation.
+        </p>
+        <div class="course-details">
+          <div class="course-detail-item">
+            <div class="detail-label">Intake</div>
+            <div class="detail-value">2026 Batch</div>
+          </div>
+          <div class="course-detail-item">
+            <div class="detail-label">Format</div>
+            <div class="detail-value">Practical + Theory</div>
+          </div>
+          <div class="course-detail-item">
+            <div class="detail-label">Location</div>
+            <div class="detail-value">Ranmal Flora Lab, Sri Lanka</div>
+          </div>
+          <div class="course-detail-item">
+            <div class="detail-label">Status</div>
+            <div class="detail-value" style="color:var(--gold);">Open for Enquiry</div>
+          </div>
+        </div>
+        <a href="https://wa.me/94717056538?text=Hello!%20I%20am%20interested%20in%20the%202026%20Certificate%20Course%20in%20Tissue%20Culture%20at%20Ranmal%20Flora."
+           class="btn-primary" target="_blank" rel="noopener">
+          Enquire About the Course
+          <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><path d="M5 12h14M12 5l7 7-7 7"/></svg>
+        </a>
+      </div>
+      <div class="course-visual reveal" style="transition-delay:0.2s">
+        <img src="images/course-workstations.jpg"
+             alt="Tissue culture workstations at Ranmal Flora" class="course-img"/>
+        <div class="course-overlay-card">
+          <div class="coc-title">2026<br/>Intake</div>
+          <div class="coc-sub">Certificate Programme</div>
+        </div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- ============ TEAM ============ -->
+<section class="team-section" id="team">
+  <div class="container">
+    <div class="reveal" style="text-align:center;max-width:560px;margin:0 auto 16px;">
+      <div class="section-eyebrow" style="justify-content:center;">
+        <span style="width:28px;height:1px;background:var(--moss);display:block;"></span>
+        The People Behind The Plants
+      </div>
+      <h2 class="section-title" style="text-align:center;">Meet Our <em>Leadership</em></h2>
+    </div>
+    <div class="team-grid">
+      <div class="team-card reveal">
+        <div class="team-img-wrap">
+          <img src="images/team-suraweera.jpg"
+               alt="Dr. P. H. R. Suraweera — Managing Director" class="team-img"/>
+        </div>
+        <div class="team-info">
+          <div class="team-name">Dr. P. H. R. Suraweera</div>
+          <div class="team-role">Managing Director</div>
+        </div>
+      </div>
+      <div class="team-card reveal" style="transition-delay:0.15s">
+        <div class="team-img-wrap">
+          <img src="images/team-jayakody.jpg"
+               alt="T. P. N. Jayakody — Managing Director" class="team-img"/>
+        </div>
+        <div class="team-info">
+          <div class="team-name">T. P. N. Jayakody</div>
+          <div class="team-role">Managing Director</div>
+        </div>
+      </div>
+      <div class="team-card reveal" style="transition-delay:0.3s">
+        <div class="team-img-wrap">
+          <img src="images/team-hasanthi.jpg"
+               alt="Hasanthi Thilakarathne — General Manager" class="team-img"/>
+        </div>
+        <div class="team-info">
+          <div class="team-name">Hasanthi Thilakarathne</div>
+          <div class="team-role">General Manager</div>
+        </div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- ============ CONTACT ============ -->
+<section class="contact-section" id="contact">
+  <div class="container">
+    <div class="contact-grid">
+      <div class="reveal">
+        <div class="section-eyebrow" style="color:var(--fern);">
+          <span style="width:28px;height:1px;background:var(--fern);display:block;"></span>
+          Get In Touch
+        </div>
+        <h2 class="section-title">Let's Grow<br/><em>Together</em></h2>
+        <p class="section-body">
+          Whether you're a wholesale nursery, a commercial farm, a home grower, or interested in our certificate programme — we'd love to hear from you.
+        </p>
+        <div class="contact-items">
+          <a href="tel:+94717056538" class="contact-item">
+            <div class="contact-icon">📞</div>
+            <div>
+              <div class="contact-label">Call Us</div>
+              <div class="contact-value">+94 71 705 6538</div>
+            </div>
+          </a>
+          <a href="mailto:info@ranmalflora.com" class="contact-item">
+            <div class="contact-icon">✉️</div>
+            <div>
+              <div class="contact-label">Email</div>
+              <div class="contact-value">info@ranmalflora.com</div>
+            </div>
+          </a>
+          <a href="https://wa.me/94717056538" class="contact-item" target="_blank" rel="noopener">
+            <div class="contact-icon">
+              <svg width="20" height="20" viewBox="0 0 24 24" fill="#25D366">
+                <path d="M17.472 14.382c-.297-.149-1.758-.867-2.03-.967-.273-.099-.471-.148-.67.15-.197.297-.767.966-.94 1.164-.173.199-.347.223-.644.075-.297-.15-1.255-.463-2.39-1.475-.883-.788-1.48-1.761-1.653-2.059-.173-.297-.018-.458.13-.606.134-.133.298-.347.446-.52.149-.174.198-.298.298-.497.099-.198.05-.371-.025-.52-.075-.149-.669-1.612-.916-2.207-.242-.579-.487-.5-.669-.51-.173-.008-.371-.01-.57-.01-.198 0-.52.074-.792.372-.272.297-1.04 1.016-1.04 2.479 0 1.462 1.065 2.875 1.213 3.074.149.198 2.096 3.2 5.077 4.487.709.306 1.262.489 1.694.625.712.227 1.36.195 1.871.118.571-.085 1.758-.719 2.006-1.413.248-.694.248-1.289.173-1.413-.074-.124-.272-.198-.57-.347m-5.421 7.403h-.004a9.87 9.87 0 01-5.031-1.378l-.361-.214-3.741.982.998-3.648-.235-.374a9.86 9.86 0 01-1.51-5.26c.001-5.45 4.436-9.884 9.888-9.884 2.64 0 5.122 1.03 6.988 2.898a9.825 9.825 0 012.893 6.994c-.003 5.45-4.437 9.884-9.885 9.884m8.413-18.297A11.815 11.815 0 0012.05 0C5.495 0 .16 5.335.157 11.892c0 2.096.547 4.142 1.588 5.945L.057 24l6.305-1.654a11.882 11.882 0 005.683 1.448h.005c6.554 0 11.89-5.335 11.893-11.893a11.821 11.821 0 00-3.48-8.413z"/>
+              </svg>
+            </div>
+            <div>
+              <div class="contact-label">WhatsApp (Fastest)</div>
+              <div class="contact-value">+94 71 705 6538</div>
+            </div>
+          </a>
+        </div>
+      </div>
+      <div class="reveal" style="transition-delay:0.15s">
+        <form class="contact-form" onsubmit="handleFormSubmit(event)">
+          <div class="form-row">
+            <div class="form-group">
+              <label for="name">Full Name</label>
+              <input type="text" id="name" name="name" placeholder="Your name" required/>
+            </div>
+            <div class="form-group">
+              <label for="email">Email Address</label>
+              <input type="email" id="email" name="email" placeholder="your@email.com" required/>
+            </div>
+          </div>
+          <div class="form-group">
+            <label for="type">Enquiry Type</label>
+            <select id="type" name="type">
+              <option value="">Select an option</option>
+              <option>Wholesale / International Order</option>
+              <option>Local Purchase</option>
+              <option>Certificate Course</option>
+              <option>Technical Support</option>
+              <option>General Enquiry</option>
+            </select>
+          </div>
+          <div class="form-group">
+            <label for="message">Message</label>
+            <textarea id="message" name="message" placeholder="Tell us about your requirements — plant varieties, quantities, destination country, etc." required></textarea>
+          </div>
+          <button type="submit" class="btn-primary" style="width:100%;justify-content:center;">
+            Send Enquiry
+            <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><path d="M5 12h14M12 5l7 7-7 7"/></svg>
+          </button>
+        </form>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- ============ FOOTER ============ -->
+<footer role="contentinfo">
+  <div class="footer-inner">
+    <div class="footer-logo">
+      <img src="images/logo.png" alt="Ranmal Flora"/>
+    </div>
+    <ul class="footer-links">
+      <li><a href="#about">About</a></li>
+      <li><a href="#products">Products</a></li>
+      <li><a href="#export">Export</a></li>
+      <li><a href="#course">Course</a></li>
+      <li><a href="#contact">Contact</a></li>
+    </ul>
+    <p class="footer-copy">© 2026 Ranmal Flora. Sri Lanka.</p>
+  </div>
+</footer>
+
+<!-- ============ JS ============ -->
+<script>
+  // ---- NAV SCROLL ----
+  const nav = document.getElementById('mainNav');
+  window.addEventListener('scroll', () => {
+    nav.classList.toggle('scrolled', window.scrollY > 60);
+  }, { passive: true });
+
+  // ---- MOBILE NAV ----
+  const toggle = document.getElementById('navToggle');
+  const links  = document.getElementById('navLinks');
+  toggle.addEventListener('click', () => {
+    const open = links.classList.toggle('open');
+    toggle.setAttribute('aria-expanded', open);
+    document.body.style.overflow = open ? 'hidden' : '';
+  });
+  links.querySelectorAll('a').forEach(a => {
+    a.addEventListener('click', () => {
+      links.classList.remove('open');
+      toggle.setAttribute('aria-expanded', false);
+      document.body.style.overflow = '';
+    });
+  });
+
+  // ---- PRODUCT TABS ----
+  document.querySelectorAll('.tab-btn').forEach(btn => {
+    btn.addEventListener('click', () => {
+      document.querySelectorAll('.tab-btn').forEach(b => { b.classList.remove('active'); b.setAttribute('aria-selected','false'); });
+      document.querySelectorAll('.products-grid').forEach(g => g.classList.remove('active'));
+      btn.classList.add('active');
+      btn.setAttribute('aria-selected','true');
+      const target = document.getElementById('tab-' + btn.dataset.tab);
+      if (target) target.classList.add('active');
+    });
+  });
+
+  // ---- REVEAL ON SCROLL ----
+  const observer = new IntersectionObserver((entries) => {
+    entries.forEach(e => {
+      if (e.isIntersecting) {
+        e.target.classList.add('visible');
+        observer.unobserve(e.target);
+      }
+    });
+  }, { threshold: 0.12, rootMargin: '0px 0px -40px 0px' });
+
+  document.querySelectorAll('.reveal').forEach(el => observer.observe(el));
+
+  // ---- FORM SUBMIT (demo) ----
+  function handleFormSubmit(e) {
+    e.preventDefault();
+    const btn = e.target.querySelector('button[type="submit"]');
+    const name = e.target.querySelector('#name').value;
+    const type = e.target.querySelector('#type').value;
+    const msg  = e.target.querySelector('#message').value;
+    const wa   = `Hello Ranmal Flora! I submitted an enquiry via your website.\n\nName: ${name}\nType: ${type || 'General'}\n\nMessage: ${msg}`;
+    window.open(`https://wa.me/94717056538?text=${encodeURIComponent(wa)}`, '_blank');
+    btn.textContent = 'Sent! ✓';
+    btn.style.background = 'var(--fern)';
+    setTimeout(() => { btn.textContent = 'Send Enquiry →'; btn.style.background = ''; }, 4000);
+  }
+
+  // ---- COUNTER ANIMATION ----
+  function animateCounter(el, target, suffix) {
+    let start = 0;
+    const duration = 1800;
+    const step = (timestamp) => {
+      if (!start) start = timestamp;
+      const progress = Math.min((timestamp - start) / duration, 1);
+      const eased = 1 - Math.pow(1 - progress, 3);
+      el.textContent = (target < 10 ? (eased * target).toFixed(1) : Math.floor(eased * target)) + suffix;
+      if (progress < 1) requestAnimationFrame(step);
+    };
+    requestAnimationFrame(step);
+  }
+
+  const statObserver = new IntersectionObserver((entries) => {
+    entries.forEach(e => {
+      if (e.isIntersecting) {
+        const nums = e.target.querySelectorAll('.stat-number');
+        const data = [{ val: 1.2, suf: 'M+' }, { val: 10, suf: '+' }, { val: 5, suf: '+' }];
+        nums.forEach((n, i) => animateCounter(n, data[i].val, data[i].suf));
+        statObserver.unobserve(e.target);
+      }
+    });
+  }, { threshold: 0.5 });
+
+  const statsEl = document.querySelector('.hero-stats');
+  if (statsEl) statObserver.observe(statsEl);
+</script>
+</body>
+</html>
