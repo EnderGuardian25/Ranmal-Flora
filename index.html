@@ -299,6 +299,17 @@
     50%       { opacity: 0.5; transform: scale(1.4); }
   }
 
+  /* ---- HERO BOTANICAL ART ---- */
+  .hero-art-wrap {
+    position: relative;
+    display: flex; align-items: center; justify-content: center;
+  }
+  .hero-art-svg {
+    width: 100%; max-width: 500px; height: auto;
+    animation: floatLeaf 12s ease-in-out infinite;
+    filter: drop-shadow(0 0 48px rgba(82,183,136,0.14));
+  }
+
   /* =============================================
      MARQUEE STRIP
   ============================================= */
@@ -627,6 +638,9 @@
   .facility-card.featured .facility-title { color: white; }
   .facility-card.featured .facility-body { color: rgba(255,255,255,0.6); }
   .facility-card.featured .facility-number { color: rgba(255,255,255,0.1); }
+  .facility-card.featured:hover { background: var(--jungle); }
+  .facility-card.featured:hover .facility-body { color: rgba(255,255,255,0.5); }
+  .facility-card.featured:hover .facility-icon-bg { background: rgba(255,255,255,0.05); }
 
   .facility-number {
     position: absolute; bottom: 16px; right: 20px;
@@ -712,9 +726,11 @@
   }
   .course-visual {
     position: relative;
+    overflow: hidden;
   }
   .course-img {
-    width: 100%; height: 480px; object-fit: cover;
+    width: 100%; height: 480px; object-fit: cover; object-position: center;
+    display: block;
     filter: brightness(0.85) saturate(1.1);
   }
   .course-overlay-card {
@@ -956,6 +972,7 @@
     <img src="images/logo.png" alt="Ranmal Flora logo"/>
   </a>
   <ul class="nav-links" id="navLinks">
+    <li><a href="#">Home</a></li>
     <li><a href="#about">About</a></li>
     <li><a href="#products">Products</a></li>
     <li><a href="#export">Export</a></li>
@@ -1032,9 +1049,126 @@
     </div>
 
     <div class="hero-visual">
-      <div class="hero-img-frame">
-        <img src="images/hero.jpg"
-             alt="Ranmal Flora tissue culture laboratory — precision plant propagation"/>
+      <div class="hero-art-wrap">
+        <svg class="hero-art-svg" viewBox="0 0 480 480" fill="none" xmlns="http://www.w3.org/2000/svg" aria-hidden="true">
+          <defs>
+            <radialGradient id="bgGrad" cx="50%" cy="42%" r="55%">
+              <stop offset="0%" stop-color="#1a4a2e"/>
+              <stop offset="100%" stop-color="#0d2818"/>
+            </radialGradient>
+            <radialGradient id="spotGlow" cx="50%" cy="38%" r="38%">
+              <stop offset="0%" stop-color="#52b788" stop-opacity="0.18"/>
+              <stop offset="100%" stop-color="#52b788" stop-opacity="0"/>
+            </radialGradient>
+            <clipPath id="lensClip">
+              <circle cx="240" cy="240" r="218"/>
+            </clipPath>
+          </defs>
+
+          <!-- Outer dashed measurement ring -->
+          <circle cx="240" cy="240" r="234" stroke="#52b788" stroke-width="0.8" stroke-dasharray="2 10" opacity="0.22"/>
+
+          <!-- Main lens -->
+          <circle cx="240" cy="240" r="220" fill="url(#bgGrad)"/>
+          <circle cx="240" cy="240" r="220" stroke="#52b788" stroke-width="1.5" opacity="0.55"/>
+
+          <!-- Spotlight glow -->
+          <circle cx="240" cy="240" r="210" fill="url(#spotGlow)"/>
+
+          <!-- Plant cell background grid (clipped) -->
+          <g clip-path="url(#lensClip)" opacity="0.45">
+            <ellipse cx="194" cy="184" rx="32" ry="42" transform="rotate(-8 194 184)" fill="rgba(82,183,136,0.07)" stroke="#52b788" stroke-width="0.7"/>
+            <ellipse cx="240" cy="178" rx="28" ry="38" fill="rgba(82,183,136,0.06)" stroke="#52b788" stroke-width="0.7"/>
+            <ellipse cx="286" cy="185" rx="31" ry="41" transform="rotate(8 286 185)" fill="rgba(82,183,136,0.07)" stroke="#52b788" stroke-width="0.7"/>
+            <ellipse cx="178" cy="238" rx="34" ry="30" transform="rotate(12 178 238)" fill="rgba(82,183,136,0.06)" stroke="#52b788" stroke-width="0.7"/>
+            <ellipse cx="240" cy="234" rx="29" ry="26" fill="rgba(82,183,136,0.05)" stroke="#52b788" stroke-width="0.7"/>
+            <ellipse cx="302" cy="238" rx="33" ry="30" transform="rotate(-12 302 238)" fill="rgba(82,183,136,0.06)" stroke="#52b788" stroke-width="0.7"/>
+            <ellipse cx="194" cy="294" rx="32" ry="40" transform="rotate(6 194 294)" fill="rgba(82,183,136,0.07)" stroke="#52b788" stroke-width="0.7"/>
+            <ellipse cx="240" cy="300" rx="28" ry="36" fill="rgba(82,183,136,0.06)" stroke="#52b788" stroke-width="0.7"/>
+            <ellipse cx="286" cy="293" rx="31" ry="40" transform="rotate(-6 286 293)" fill="rgba(82,183,136,0.07)" stroke="#52b788" stroke-width="0.7"/>
+          </g>
+
+          <!-- Roots -->
+          <g stroke="#52b788" stroke-linecap="round" fill="none" opacity="0.5">
+            <path d="M240 306 Q228 323 220 341" stroke-width="2"/>
+            <path d="M240 306 Q240 326 239 345" stroke-width="2"/>
+            <path d="M240 306 Q252 323 260 341" stroke-width="2"/>
+            <path d="M220 341 Q214 355 212 368" stroke-width="1.5" opacity="0.7"/>
+            <path d="M239 345 Q237 359 236 372" stroke-width="1.5" opacity="0.7"/>
+            <path d="M260 341 Q266 355 268 368" stroke-width="1.5" opacity="0.7"/>
+            <path d="M212 368 Q208 376 207 384" stroke-width="1" opacity="0.4"/>
+            <path d="M268 368 Q272 376 274 384" stroke-width="1" opacity="0.4"/>
+          </g>
+
+          <!-- Main stem -->
+          <path d="M240 306 C239 280 240 255 240 158" stroke="#b7e4c7" stroke-width="2.5" stroke-linecap="round"/>
+
+          <!-- Leaf pair 1 — dark -->
+          <path d="M240 278 C220 258 196 254 190 268 C204 280 226 280 240 278Z" fill="#1a4a2e"/>
+          <path d="M240 278 C260 258 284 254 290 268 C276 280 254 280 240 278Z" fill="#1a4a2e" opacity="0.9"/>
+          <path d="M240 278 L196 268" stroke="#52b788" stroke-width="0.8" opacity="0.35"/>
+          <path d="M240 278 L284 268" stroke="#52b788" stroke-width="0.8" opacity="0.35"/>
+
+          <!-- Leaf pair 2 — moss -->
+          <path d="M240 248 C222 228 200 226 196 238 C210 250 230 250 240 248Z" fill="#2d6a4f"/>
+          <path d="M240 248 C258 228 280 226 284 238 C270 250 250 250 240 248Z" fill="#2d6a4f" opacity="0.88"/>
+          <path d="M240 248 L200 240" stroke="#52b788" stroke-width="0.8" opacity="0.3"/>
+          <path d="M240 248 L280 240" stroke="#52b788" stroke-width="0.8" opacity="0.3"/>
+
+          <!-- Leaf pair 3 — fern -->
+          <path d="M240 218 C224 200 206 200 204 210 C216 220 232 220 240 218Z" fill="#52b788" opacity="0.9"/>
+          <path d="M240 218 C256 200 274 200 276 210 C264 220 248 220 240 218Z" fill="#52b788" opacity="0.82"/>
+          <path d="M240 218 L207 212" stroke="#b7e4c7" stroke-width="0.8" opacity="0.28"/>
+          <path d="M240 218 L273 212" stroke="#b7e4c7" stroke-width="0.8" opacity="0.28"/>
+
+          <!-- Leaf pair 4 — young / lime -->
+          <path d="M240 193 C228 180 215 180 214 188 C222 196 234 196 240 193Z" fill="#b7e4c7" opacity="0.8"/>
+          <path d="M240 193 C252 180 265 180 266 188 C258 196 246 196 240 193Z" fill="#b7e4c7" opacity="0.7"/>
+
+          <!-- Apical bud (golden) -->
+          <circle cx="240" cy="156" r="15" fill="none" stroke="#f0b429" stroke-width="1" opacity="0.25"/>
+          <circle cx="240" cy="156" r="10" fill="#d48c2d" opacity="0.95"/>
+          <circle cx="240" cy="156" r="6"  fill="#f0b429"/>
+          <circle cx="240" cy="156" r="3"  fill="rgba(255,248,220,0.9)"/>
+
+          <!-- Scale bar -->
+          <g opacity="0.38">
+            <line x1="105" y1="394" x2="185" y2="394" stroke="#52b788" stroke-width="1.5"/>
+            <line x1="105" y1="389" x2="105" y2="399" stroke="#52b788" stroke-width="1.5"/>
+            <line x1="185" y1="389" x2="185" y2="399" stroke="#52b788" stroke-width="1.5"/>
+            <text x="145" y="413" fill="#52b788" font-family="monospace" font-size="10" text-anchor="middle">500 µm</text>
+          </g>
+
+          <!-- Crosshair extensions outside lens -->
+          <line x1="14"  y1="240" x2="52"  y2="240" stroke="#52b788" stroke-width="1" opacity="0.16"/>
+          <line x1="428" y1="240" x2="466" y2="240" stroke="#52b788" stroke-width="1" opacity="0.16"/>
+          <line x1="240" y1="14"  x2="240" y2="50"  stroke="#52b788" stroke-width="1" opacity="0.16"/>
+          <line x1="240" y1="430" x2="240" y2="466" stroke="#52b788" stroke-width="1" opacity="0.16"/>
+
+          <!-- Corner markers -->
+          <g stroke="#52b788" stroke-width="1.2" opacity="0.18">
+            <path d="M44 54 L68 54 M54 44 L54 68"/>
+            <path d="M436 54 L412 54 M426 44 L426 68"/>
+            <path d="M44 426 L68 426 M54 436 L54 412"/>
+            <path d="M436 426 L412 426 M426 436 L426 412"/>
+          </g>
+
+          <!-- Gold accent particles -->
+          <g fill="#f0b429">
+            <circle cx="165" cy="148" r="2.5" opacity="0.7"/>
+            <circle cx="332" cy="162" r="2"   opacity="0.6"/>
+            <circle cx="350" cy="320" r="2.5" opacity="0.65"/>
+            <circle cx="148" cy="320" r="2"   opacity="0.55"/>
+            <circle cx="188" cy="192" r="1.5" opacity="0.6"/>
+            <circle cx="298" cy="196" r="1.5" opacity="0.55"/>
+            <circle cx="178" cy="362" r="2"   opacity="0.45"/>
+            <circle cx="305" cy="355" r="1.5" opacity="0.5"/>
+          </g>
+
+          <!-- Amber outer accent ring -->
+          <circle cx="240" cy="240" r="227" stroke="rgba(212,140,45,0.1)" stroke-width="2.5"/>
+        </svg>
+
         <div class="hero-badge">
           <div class="badge-dot"></div>
           Active Production — 2026
